@@ -1,50 +1,40 @@
 # AI Task App – Frontend
 
-Ten folder będzie zawierał frontendową część aplikacji AI Task App – stworzoną w oparciu o React i TailwindCSS. Interfejs użytkownika będzie komunikował się z backendem przez REST API.
+Ten folder zawiera frontend aplikacji AI Task App – klienta React wspomaganego przez GPT.  
+Umożliwia zarządzanie zadaniami, przeglądanie historii, tworzenie notatek i komunikację z backendem.
 
-## 🧰 Technologie (planowane)
+## 🎨 Technologie
 
-- React (Vite lub Create React App)
+- React
 - TailwindCSS
-- React Router (routing)
-- Context API lub Redux (zarządzanie stanem)
-- JWT Auth + localStorage
-- Axios lub Fetch API
+- React Router DOM
+- localStorage (JWT)
+- Vite (lub Create React App – do ustalenia)
+- Komunikacja z REST API (fetch / axios)
 
-## 📂 Planowana struktura folderów
+## 📁 Struktura katalogów (planowana)
 
 ```
 frontend/
-├── public/             # Statyczne pliki
 ├── src/
-│   ├── assets/         # Ikony, grafiki
-│   ├── components/     # Komponenty UI
-│   ├── pages/          # Widoki (Login, Register, Tasks, Dashboard)
-│   ├── services/       # Komunikacja z API (np. auth, tasks)
-│   ├── context/        # Autoryzacja i globalny stan
+│   ├── assets/
+│   ├── components/
+│   ├── context/
+│   ├── pages/
+│   ├── services/
 │   ├── App.jsx
 │   └── main.jsx
+├── public/
 ├── .env
 └── tailwind.config.js
 ```
 
-## ✨ Planowane funkcje
+## 🚀 Uruchomienie frontendu
 
-- Rejestracja i logowanie użytkownika
-- Przechowywanie tokenu JWT w localStorage
-- Tworzenie i edycja zadań z pomocą GPT
-- Widok historii i szczegółów zadania
-- Przeszukiwanie zakończonych zadań
-- Podsumowanie rozwiązania zadania przez GPT
-- Panel admina (tylko dla użytkowników z rolą `admin`)
-- Ukryty dashboard ze statystykami kliknięć (hasło + ikona)
+1. Skonfiguruj plik `.env`:
 
-## 🚀 Uruchomienie (docelowo)
-
-1. Przejdź do folderu frontend:
-
-```bash
-cd frontend
+```
+VITE_API_URL=http://localhost:5000
 ```
 
 2. Zainstaluj zależności:
@@ -53,23 +43,21 @@ cd frontend
 npm install
 ```
 
-3. Uruchom aplikację w trybie deweloperskim:
+3. Uruchom aplikację:
 
 ```bash
 npm run dev
 ```
 
-4. Otwórz w przeglądarce:
+## 🧠 Integracja z AI
 
-```
-http://localhost:5173
-```
+- Tworzenie struktury zadania z opisu
+- Ocena trudności i priorytetu
+- Proponowanie kolejności wykonania
+- Historia podobnych zadań (planowane)
 
-## 🔗 Komunikacja z backendem
+## 📄 Dokumentacja
 
-- Backend nasłuchuje na porcie `5000`
-- Frontend będzie komunikować się z API za pomocą `fetch` lub `axios` (np. `http://localhost:5000/api/auth/register`)
-
-## 📝 Dokumentacja
-
-Zobacz: `../docs/AI_Task_App_backend_dokumentacja_szczegolowa.docx`
+- [`docs/frontend_overview.md`](../docs/frontend_overview.md)
+- [`docs/ai_integration.md`](../docs/ai_integration.md)
+- [`docs/project_roadmap.md`](../docs/project_roadmap.md)
