@@ -58,6 +58,9 @@ npm run dev
 
 ## 📄 Dokumentacja
 
-- [`docs/frontend_overview.md`](../docs/frontend_overview.md)
-- [`docs/ai_integration.md`](../docs/ai_integration.md)
-- [`docs/project_roadmap.md`](../docs/project_roadmap.md)
+- [project_overview.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/project_overview.md)
+- [backend_overview.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/backend_overview.md)
+- [frontend_overview.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/frontend_overview.md)
+- [api_spec.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/api_spec.md)
+- [ai_integration.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/ai_integration.md)
+- [project_roadmap.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/project_roadmap.md)
