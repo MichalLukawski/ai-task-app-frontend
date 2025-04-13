@@ -1,66 +1,12 @@
-# AI Task App – Frontend
+# React + Vite
 
-Ten folder zawiera frontend aplikacji AI Task App – klienta React wspomaganego przez GPT.  
-Umożliwia zarządzanie zadaniami, przeglądanie historii, tworzenie notatek i komunikację z backendem.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🎨 Technologie
+Currently, two official plugins are available:
 
-- React
-- TailwindCSS
-- React Router DOM
-- localStorage (JWT)
-- Vite (lub Create React App – do ustalenia)
-- Komunikacja z REST API (fetch / axios)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## 📁 Struktura katalogów (planowana)
+## Expanding the ESLint configuration
 
-```
-frontend/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── context/
-│   ├── pages/
-│   ├── services/
-│   ├── App.jsx
-│   └── main.jsx
-├── public/
-├── .env
-└── tailwind.config.js
-```
-
-## 🚀 Uruchomienie frontendu
-
-1. Skonfiguruj plik `.env`:
-
-```
-VITE_API_URL=http://localhost:5000
-```
-
-2. Zainstaluj zależności:
-
-```bash
-npm install
-```
-
-3. Uruchom aplikację:
-
-```bash
-npm run dev
-```
-
-## 🧠 Integracja z AI
-
-- Tworzenie struktury zadania z opisu
-- Ocena trudności i priorytetu
-- Proponowanie kolejności wykonania
-- Historia podobnych zadań (planowane)
-
-## 📄 Dokumentacja
-
-- [project_overview.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/project_overview.md)
-- [backend_overview.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/backend_overview.md)
-- [frontend_overview.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/frontend_overview.md)
-- [api_spec.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/api_spec.md)
-- [ai_integration.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/ai_integration.md)
-- [project_roadmap.md](https://github.com/MichalLukawski/ai_task_app/blob/main/docs/project_roadmap.md)
+If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
