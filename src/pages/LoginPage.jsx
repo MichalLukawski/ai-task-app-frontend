@@ -1,70 +1,64 @@
+//frontend/src/pages/LoginPage.jsx
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import axios from '../api/axios'; // Upewnij się, że masz ten plik!
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    setLoading(true);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await axios.post('/auth/login', { email, password });
+      const token = res.data.data.token;
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-
-      // Zapisz token do contextu i localStorage
-      login(data.token); // możesz dodać też `data.user` jeśli chcesz
-
+      login(token); // zapis tokena w context
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message);
+      const msg = err.response?.data?.message || 'Login failed';
+      setError(msg);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-50">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Login</h2>
-
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow-md">
+      <h2 className="text-2xl font-bold mb-4">Log in</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="email"
           placeholder="Email"
-          className="w-full p-2 border rounded"
+          className="w-full border p-2 rounded"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-
         <input
           type="password"
           placeholder="Password"
-          className="w-full p-2 border rounded"
+          className="w-full border p-2 rounded"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-
+        {error && <p className="text-red-500 text-sm">{error}</p>}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          disabled={loading}
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
         >
-          Log in
+          {loading ? 'Logging in...' : 'Log in'}
         </button>
       </form>
     </div>

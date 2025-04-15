@@ -1,6 +1,5 @@
-//frontend/src/pages/RegisterPage.jsx
-
 import { useState } from 'react';
+import axios from '../api/axios';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -14,19 +13,13 @@ export default function RegisterPage() {
     setSuccess(false);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!res.ok) throw new Error('Registration failed');
-
+      await axios.post('/auth/register', { email, password });
       setSuccess(true);
       setEmail('');
       setPassword('');
     } catch (err) {
-      setError(err.message);
+      const msg = err.response?.data?.message || 'Registration failed';
+      setError(msg);
     }
   };
 

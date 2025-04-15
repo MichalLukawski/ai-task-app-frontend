@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.0.2] – 2025-04-14
+
+### Added
+
+- Obsługę AI przy tworzeniu zadań: automatyczne generowanie tytułu, terminu (`dueDate`) i poziomu trudności (`difficulty`) na podstawie opisu użytkownika
+- Pasek postępu terminu (`DueDateProgress`) wizualizujący czas do `dueDate`
+- Edytowalne karty zadań (`TaskCardEdit`) oraz widok podglądu (`TaskCardView`)
+- Hook `useTaskCardState` do zarządzania trybem edycji karty zadania
+- Możliwość ręcznej zmiany terminu (`DueDateEditor`) i trudności (`DifficultyStars`)
+- Obsługę zamykania zadania na dwa sposoby:
+  - manualnie na podstawie innego zadania (`sourceTaskId`)
+  - automatycznie z oceną `summary` przez AI
+- Obsługę podobnych zadań (`similarTasks`) generowanych na podstawie embeddingów
+
+### Changed
+
+- Stronę `/tasks` zastąpiono `/dashboard`
+- Formularz tworzenia zadania wbudowano w `DashboardPage` (brak `/tasks/new`)
+- Refaktoryzacja struktury komponentów – wprowadzenie podziału na `View` i `Edit`
+
+---
+
 ## [0.0.1] – 2025-04-13
 
 ### Added
