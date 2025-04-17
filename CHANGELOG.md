@@ -1,5 +1,46 @@
 # Changelog
 
+## [0.0.3] – 2025-04-17
+
+### Added
+
+- Rozbudowany mechanizm edycji pól `dueDate` i `difficulty`:
+  - Edycja odbywa się inline w ramach `TaskCardView`, bez przełączania widoków
+  - Zmiany są zapisywane dopiero po kliknięciu w kartę, poza pole edycji lub po wciśnięciu klawisza `Enter`
+  - Obsługa stanu `isSaving` i `showSaved` dla lepszego UX
+  - Po zapisie następuje automatyczne odświeżenie danych przez `GET` (`refetchAfterSave`)
+- Wsparcie dla synchronizacji z backendem:
+  - `useTaskCardState` po zapisie pobiera aktualny stan zadania z API
+  - Użycie `onTaskUpdated()` do aktualizacji globalnej listy zadań
+- Logika fokusowania tylko jednej karty (`focusedCardId`) w `DashboardPage`
+- Obsługa zamykania karty poprzez podwójne kliknięcie lub `Enter` bez zmiany stanu
+- Detekcja kliknięć poza kartą – domknięcie edycji i zapis stanu
+- Refaktoryzacja komponentów:
+  - `DueDateEditor`, `DifficultySelector`, `TaskCardView`, `TaskCard.jsx` – uproszczenie logiki interakcji
+  - Przeniesienie wszystkich kart zadania do folderu `TaskCard/`
+- Komunikaty "Zapisuję..." i "✔ Zapisano" w edytowanych polach
+- Animacja `saving` – tymczasowe UI na czas aktualizacji
+- Dokumentacja:
+  - `components.md`, `task_flow.md`, `hooks.md`, `backend_overview.md`, `pages.md`, `api-integration.md`, `project_roadmap.md`
+
+### Changed
+
+- Hook `useTaskCardState` całkowicie przepisany na logikę zarządzania lokalnym stanem `editedTask`
+- `TaskCardView` działa teraz bez udziału `TaskCardEdit` – plik ten oznaczono jako przestarzały
+- Zmieniono logikę `DashboardPage`:
+  - Umożliwia synchronizację zmian z kartami
+  - Obsługuje `Enter` w kontekście aktywnej karty
+- Usunięto `auto-save` – zapis zawsze musi być wyraźnie zainicjowany
+
+### Removed
+
+- `TaskCardEdit.jsx` – oznaczony jako nieużywany i możliwy do usunięcia
+- Wczesne automatyczne zapisywanie pól edycyjnych
+
+---
+
+# Changelog
+
 ## [0.0.2] – 2025-04-14
 
 ### Added

@@ -1,6 +1,6 @@
 //frontend/src/components/DueDateProgress.jsx
 
-import { formatDate } from '../utils/dateUtils';
+import { formatDate } from '../../utils/dateUtils';
 
 export default function DueDateProgress({ createdAt, dueDate }) {
   const now = new Date();

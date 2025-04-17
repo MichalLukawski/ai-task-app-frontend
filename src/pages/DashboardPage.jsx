@@ -1,19 +1,20 @@
-//frontend/src/pages/DashboardPage.jsx
-
 import { useEffect, useState } from 'react';
-import axios from '../api/axios';
-import TaskCard from '../components/TaskCard';
+import { useApi } from '../hooks/useApi'; // jeśli używasz named export
+// lub: import useApi from '../hooks/useApi'; // jeśli masz default
+import TaskCard from '../components/TaskCard/TaskCard';
 import CreateTaskForm from '../components/CreateTaskForm';
 
 export default function DashboardPage() {
   const [tasks, setTasks] = useState([]);
+  const { get } = useApi();
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get('/tasks');
-      setTasks(res.data.data);
+      const res = await get('/tasks');
+      setTasks(res.data);
     } catch (err) {
-      console.error('Failed to fetch tasks:', err);
+      console.error('❌ Failed to fetch tasks:', err);
+      setTasks([])
     }
   };
 
@@ -41,9 +42,13 @@ export default function DashboardPage() {
         <div className="md:col-span-3">
           <h2 className="text-2xl font-semibold mb-4">Your Tasks</h2>
           <div className="space-y-4">
-            {tasks.map((task) => (
-              <TaskCard key={task._id} task={task} onTaskUpdated={handleTaskUpdated} />
-            ))}
+          {Array.isArray(tasks) && tasks.length > 0 ? (
+            tasks.map((task) => (
+            <TaskCard key={task._id} task={task} onTaskUpdated={handleTaskUpdated} />
+          ))
+            ) : (
+          <p className="text-gray-500">You don't have any tasks yet.</p>
+            )}
           </div>
         </div>
       </div>

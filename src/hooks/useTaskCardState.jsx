@@ -1,126 +1,105 @@
-//frontend/src/hooks/useTaskCardState.js
+// frontend/src/hooks/useTaskCardState.js
 
-import { useEffect, useRef, useState } from 'react';
-import axios from '../api/axios';
+import { useEffect, useRef, useState } from "react";
+import { useApi } from "../hooks/useApi";
 
-export default function useTaskCardState(task, onTaskUpdated) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [difficulty, setDifficulty] = useState(task.difficulty);
+export const useTaskCardState = ({ task, onTaskUpdated }) => {
+  const [isFocused, setIsFocused] = useState(false);
+
+  const [isEditingDueDate, setIsEditingDueDate] = useState(false);
+  const [isEditingDifficulty, setIsEditingDifficulty] = useState(false);
+
   const [dueDate, setDueDate] = useState(task.dueDate);
+  const [difficulty, setDifficulty] = useState(task.difficulty);
+
+  const [isSaving, setIsSaving] = useState(false);
   const [showSaved, setShowSaved] = useState(false);
-  const [enterCount, setEnterCount] = useState(0);
 
-  const original = useRef({ difficulty: task.difficulty, dueDate: task.dueDate });
-  const cardRef = useRef();
-  const justOpenedRef = useRef(false); // blokada na pierwszy klik po wejściu w edycję
+  const api = useApi();
+  const cardRef = useRef(null);
 
-  // 🧠 handleClickOutside musi być zdefiniowany PRZED użyciem w useEffect
-  const handleClickOutside = (e) => {
-    if (justOpenedRef.current) {
-      justOpenedRef.current = false;
+  // Synchronizuj lokalne dane, gdy przychodzi nowy task
+  useEffect(() => {
+    setDueDate(task.dueDate);
+    setDifficulty(task.difficulty);
+  }, [task.dueDate, task.difficulty]);
+
+  const refetchTask = async () => {
+    try {
+      const updated = await api.get(`/tasks/${task._id}`);
+      setDueDate(updated.dueDate);
+      setDifficulty(updated.difficulty);
+      onTaskUpdated(updated);
+    } catch (e) {
+      console.error("❌ Błąd pobierania zadania:", e);
+    }
+  };
+
+  const saveDueDate = async (newDate) => {
+    if (!newDate || newDate === task.dueDate) {
+      setDueDate(task.dueDate);
       return;
     }
 
-    const isOutside = !cardRef.current?.contains(e.target);
-    const isNotEditable = !e.target.closest('.editable-field');
-
-    if (isEditing && (isOutside || isNotEditable)) {
-      confirmAndExitEdit();
-    }
-  };
-
-  // Synchronizacja danych wejściowych z taska
-  useEffect(() => {
-    setDifficulty(task.difficulty);
-    setDueDate(task.dueDate);
-    original.current = { difficulty: task.difficulty, dueDate: task.dueDate };
-  }, [task.difficulty, task.dueDate]);
-
-  // Obsługa kliknięcia poza kartą
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [isEditing, difficulty, dueDate]);
-
-  const handleCardClick = (e) => {
-    const clickedInEditable = e.target.closest('.editable-field');
-
-    if (!isEditing) {
-      setIsEditing(true);
-      justOpenedRef.current = true;
-      setEnterCount(0);
-    } else if (!clickedInEditable) {
-      confirmAndExitEdit();
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      e.stopPropagation();
-
-      if (enterCount >= 1) {
-        confirmAndExitEdit();
-      } else {
-        if (document.activeElement) {
-          document.activeElement.blur();
-        }
-        setEnterCount((prev) => prev + 1);
-      }
-    }
-  };
-
-  const confirmAndExitEdit = () => {
-    const isValidDate = !dueDate || !isNaN(new Date(dueDate).getTime());
-
-    if (isValidDate) {
-      saveChanges();
-    } else {
-      rollbackChanges();
-    }
-
-    setIsEditing(false);
-    setEnterCount(0);
-  };
-
-  const saveChanges = async () => {
-    const { difficulty: originalDiff, dueDate: originalDate } = original.current;
-
-    const noChanges = difficulty === originalDiff && dueDate === originalDate;
-    if (noChanges) return;
-
-    const updates = { difficulty };
-    if (dueDate) updates.dueDate = dueDate;
-
     try {
-      const res = await axios.patch(`/tasks/${task._id}`, updates);
-      onTaskUpdated?.(res.data.data);
+      setIsSaving(true);
+      await api.patch(`/tasks/${task._id}`, { dueDate: newDate });
+      await refetchTask();
       setShowSaved(true);
       setTimeout(() => setShowSaved(false), 1500);
-    } catch (err) {
-      console.error('Update failed:', err);
-      rollbackChanges();
+    } catch (e) {
+      console.error("❌ Błąd zapisu daty:", e);
+      alert("Błąd zapisu daty.");
+    } finally {
+      setIsEditingDueDate(false);
+      setIsSaving(false);
     }
   };
 
-  const rollbackChanges = () => {
-    setDifficulty(original.current.difficulty);
-    setDueDate(original.current.dueDate);
+  const saveDifficulty = async (newValue) => {
+    if (
+      typeof newValue !== "number" ||
+      newValue < 1 ||
+      newValue > 5 ||
+      newValue === task.difficulty
+    ) {
+      setDifficulty(task.difficulty);
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      await api.patch(`/tasks/${task._id}`, { difficulty: newValue });
+      await refetchTask();
+      setShowSaved(true);
+      setTimeout(() => setShowSaved(false), 1500);
+    } catch (e) {
+      console.error("❌ Błąd zapisu trudności:", e);
+      alert("Błąd zapisu trudności.");
+    } finally {
+      setIsEditingDifficulty(false);
+      setIsSaving(false);
+    }
   };
 
   return {
-    isEditing,
-    setIsEditing,
-    difficulty,
-    setDifficulty,
+    cardRef,
+    isFocused,
+    setIsFocused,
+
+    isEditingDueDate,
+    setIsEditingDueDate,
     dueDate,
     setDueDate,
-    cardRef,
+    saveDueDate,
+
+    isEditingDifficulty,
+    setIsEditingDifficulty,
+    difficulty,
+    setDifficulty,
+    saveDifficulty,
+
+    isSaving,
     showSaved,
-    handleCardClick,
-    handleKeyDown,
-    handleClickOutside,
   };
-}
+};
