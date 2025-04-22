@@ -1,4 +1,45 @@
-# Changelog
+# 🧩 CHANGELOG – Frontend (AI Task App)
+
+## [0.0.4] – 2025-04-18
+
+### Added
+
+- Obsługa zamykania zadania przy użyciu AI:
+  - `CloseWithAiBox` – komponent z dymkiem i polem tekstowym do podsumowania
+  - `closeWithAi()` – metoda hooka wywołująca AI endpoint (`/ai-close`)
+  - `isSaving`, `aiSummary`, `setAiSummaryError` – stany obsługi operacji
+- Obsługa wymuszonego zapisu w przypadku odrzucenia przez AI:
+  - `AiSummaryRejectedModal` – modal z pytaniem: "Czy zapisać mimo to?"
+  - `closeWithoutAI()` – metoda `useTaskCardState`, wysyłająca `/close`
+- Obsługa trwałego usuwania zadania:
+  - przycisk `🗑️ Usuń` w `TaskCardView`
+  - metoda `deleteTask()` w hooku, `onTaskDeleted()` w dashboardzie
+- Komponent `TaskCardSummary`:
+  - prezentacja `summary` i `closedAt` po zamknięciu zadania
+- Komponent `SimilarTasksPopup`:
+  - widok podobnych zadań (`title`, `description`, `summary`)
+  - toggle widoczności i stylowanie zgodne z kartą
+
+### Changed
+
+- Refaktoryzacja `TaskCardView`:
+  - dodano pełną obsługę `status === "closed"` (readonly)
+  - logika renderowania zależna od stanu i focusu
+- Refaktoryzacja hooka `useTaskCardState`:
+  - rozbudowa o `closeWithAi`, `closeWithoutAI`, `deleteTask`
+  - `refetchTask()` po każdej aktualizacji
+- W `DashboardPage`:
+  - wprowadzono zakładki "Your Tasks" i "Closed Tasks"
+  - sortowanie otwartych zadań (mieszane: `dueDate` i `createdAt`)
+  - sortowanie zamkniętych po `closedAt`
+  - dodano `onTaskDeleted` do listy `TaskCard`
+
+### Updated
+
+- Dokumentacja komponentów: `components.md`, `hooks.md`, `task_flow.md`, `pages.md`, `project_roadmap.md`
+- Interfejs użytkownika dla zamykania, podobnych zadań i usuwania
+
+--
 
 ## [0.0.3] – 2025-04-17
 

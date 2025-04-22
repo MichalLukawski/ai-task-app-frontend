@@ -10,6 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -19,7 +20,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await axios.post('/auth/login', { email, password });
+      const res = await axios.post('/auth/login', { email, password, rememberMe });
       const token = res.data.data.token;
 
       login(token); // zapis tokena w context
@@ -60,6 +61,15 @@ export default function LoginPage() {
         >
           {loading ? 'Logging in...' : 'Log in'}
         </button>
+        <label className="flex items-center text-sm">
+          <input
+            type="checkbox"
+            className="mr-2"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+          />
+          Zapamiętaj mnie
+        </label>
       </form>
     </div>
   );

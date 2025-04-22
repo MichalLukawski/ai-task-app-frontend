@@ -26,14 +26,9 @@ export default function DueDateProgress({ createdAt, dueDate }) {
       className="relative bg-blue-100 text-blue-900 px-3 py-1 rounded-full overflow-hidden text-sm font-medium whitespace-nowrap"
       title={`Termin: ${formatDate(dueDate, true)} — ${percent}% czasu minęło`}
     >
-      <div
-        className="absolute inset-0 bg-blue-500/20"
-        style={{ width: `${percent}%` }}
-      ></div>
+      <div className="absolute inset-0 bg-blue-500/20" style={{ width: `${percent}%` }}></div>
 
-      <span className="relative z-10 flex items-center gap-1">
-        📅 {formatDate(dueDate, true)}
-      </span>
+      <span className="relative z-10 flex items-center gap-1">📅 {formatDate(dueDate, true)}</span>
     </div>
   );
 }

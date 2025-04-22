@@ -27,7 +27,7 @@ export default function CreateTaskForm({ onTaskCreated }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-4 border rounded-xl bg-white shadow-md">
       <h2 className="text-xl font-semibold">Create Task with AI</h2>
-      
+
       <textarea
         className="w-full p-2 border rounded"
         rows={4}
